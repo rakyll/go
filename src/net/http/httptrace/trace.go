@@ -70,6 +70,13 @@ func WithClientTrace(ctx context.Context, trace *ClientTrace) context.Context {
 // called concurrently from different goroutines, starting after the
 // call to Transport.RoundTrip and ending either when RoundTrip
 // returns an error, or when the Response.Body is closed.
+//
+// ClientTrace provides an http.Transport tracing mechanism.
+// Hooks are called once per RoundTrip call. When the same trace client
+// is used for multiple RoundTrips, such as via http.Client.Do,
+// the hooks registered on that trace client will be called multiple times.
+// In that case, it is the caller's responsibility to identify trace
+// events with their corresponding RoundTrip calls.
 type ClientTrace struct {
 	// GetConn is called before a connection is created or
 	// retrieved from an idle pool. The hostPort is the
